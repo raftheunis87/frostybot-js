@@ -4,6 +4,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 var context = require('express-http-context');
 const cookieParser = require('cookie-parser');
+const queue = require('./utils/queue/index');
 
 // Load Modules
 
@@ -52,6 +53,9 @@ function rawBufferSaver (req, res, buf, encoding) {
       req.rawBody = buf.toString(encoding || 'utf8')
     }
 }
+
+// Express Queue Middleware
+app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 // Body parsers
 
